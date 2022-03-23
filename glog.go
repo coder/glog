@@ -407,7 +407,10 @@ func init() {
 	logging.stderrThreshold = errorLog
 
 	logging.setVState(0, nil, false)
-	go logging.flushDaemon()
+	
+	// This never closes and adds a leak to our testing.
+	// We may lose some logs on exit but package should call Flush() to be sure.
+	// go logging.flushDaemon()
 }
 
 // Flush flushes all pending log I/O.
